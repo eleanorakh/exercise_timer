@@ -1,0 +1,35 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @workout.name %>
+</p>
+
+<%= link_to 'Edit', edit_workout_path(@workout) %> |
+<%= link_to 'All Workouts', workouts_path %>
+
+<h1>Exercises</h1>
+<table>
+  <thead>
+    <tr>
+      <th>Workout</th>
+      <th>Name</th>
+      <th>Duration</th>
+      <th colspan="2"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @exercises.each do |exercise| %>
+      <tr>
+        <td><%= exercise.workout_id %></td>
+        <td><%= exercise.name %></td>
+        <td><%= exercise.duration %></td>
+        <td><%= link_to 'Edit', edit_workout_exercise_path(@workout, exercise) %></td>
+        <td><%= link_to 'Destroy', [@workout, exercise], method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<%= link_to 'New Exercise', new_workout_exercise_path(@workout) %>
+<%= link_to 'Start Session', new_workout_workout_session_path(@workout, @exercise) %>

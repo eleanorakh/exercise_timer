@@ -1,0 +1,5 @@
+<%= content_tag_for :div, workout_session, data: workout_session.attributes.merge(workout_url: workout_path(workout, format: :json)) do %>
+  <div id="exercise_name"></div>
+  <div id="time_remaining"></div>
+<% end %>
+<%= link_to 'Back to Workout', workout %>
