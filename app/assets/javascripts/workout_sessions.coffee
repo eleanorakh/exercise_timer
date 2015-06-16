@@ -5,10 +5,10 @@ $ ->
     exercises = data.exercises
     setsRemaining = container.data('sets')
     exerciseIndex = -1
-    timeRemaining = 0
+    exerciseEndTime = 0
 
     timer = setInterval ->
-      if timeRemaining < 1
+      if Date.now() >= exerciseEndTime
         exerciseIndex += 1
         if exerciseIndex >= exercises.length
           setsRemaining -= 1
@@ -21,7 +21,21 @@ $ ->
 
         exercise = exercises[exerciseIndex]
         container.find('#exercise_name').text(exercise.name)
-        timeRemaining = exercise.duration
-      container.find('#time_remaining').text(timeRemaining)
-      timeRemaining -= 1
-    , 1000
+        exerciseEndTime = Date.now() + exercise.duration * 1000
+      container.find('#time_remaining').text(formatTime(exerciseEndTime - Date.now()))
+    , 100
+
+formatTime = (milliseconds) ->
+  seconds = milliseconds/1000
+  minutes = Math.floor(seconds/60)
+  seconds -= minutes * 60
+
+  seconds = Math.round(seconds * 1000) / 1000
+  seconds = '' + seconds
+  if seconds < 10
+    seconds = '0' + seconds
+  if seconds.indexOf('.') == -1
+    seconds = seconds + '.0'
+  decimalPlacesCount = 3 - (seconds.length - seconds.indexOf('.') - 1)
+  seconds += '0'.repeat(decimalPlacesCount)
+  "#{minutes}:#{seconds}"
